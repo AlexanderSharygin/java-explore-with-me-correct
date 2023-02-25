@@ -5,9 +5,6 @@
 	<modules>
 		<module>main-service</module>
 		<module>stats-service</module>
-		<module>stats-service/stats-server</module>
-		<module>stats-service/stats-dto</module>
-		<module>stats-service/stats-client</module>
 	</modules>
 
 	<parent>
