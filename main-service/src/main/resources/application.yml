@@ -1,0 +1,5 @@
+server:
+  port: 8080
+
+stat-server:
+  url: ${STAT_SERVER_URL}
