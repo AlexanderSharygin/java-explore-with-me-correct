@@ -43,8 +43,9 @@ public class StatsService {
         Hit hit = HitMapper.toHit(hitDto);
         hit.setApp(newApp);
         log.info("В таблицу HIT добавлен новый элемент - обращение к {} с IP {}", hit.getUri(), hit.getIp());
+        Hit savedHit = hitRepository.save(hit);
 
-        return HitMapper.toHitDto(hitRepository.save(hit));
+        return HitMapper.toHitDto(savedHit);
     }
 
     public List<Stats> getStats(LocalDateTime startRange, LocalDateTime endRange, List<String> uris, boolean unique) {
