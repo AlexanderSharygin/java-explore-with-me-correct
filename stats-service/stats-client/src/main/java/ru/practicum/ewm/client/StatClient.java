@@ -1,4 +1,4 @@
-package ru.practicum.ewm.cient;
+package ru.practicum.ewm.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class StatsClient extends BaseClient {
+public class StatClient extends BaseClient {
 
     private static final String API_PREFIX = "";
 
     @Autowired
-    public StatsClient(@Value("stat-server.url") String serverUrl, RestTemplateBuilder builder) {
+    public StatClient(@Value("http://localhost:9090") String serverUrl, RestTemplateBuilder builder) {
         super(
                 builder
                         .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
