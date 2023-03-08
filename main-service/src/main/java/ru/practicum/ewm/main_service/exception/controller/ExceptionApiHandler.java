@@ -45,8 +45,6 @@ public class ExceptionApiHandler {
         return new ErrorResponse(exception.getMessage(), "Entity is not found!", HttpStatus.NOT_FOUND.toString());
     }
 
-
-
     @ExceptionHandler({MethodArgumentNotValidException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse commonValidation(MethodArgumentNotValidException e) {
@@ -94,7 +92,6 @@ public class ExceptionApiHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleHttpMessageNotReadableException(final HttpMessageNotReadableException e) {
         log.warn("HttpMessageNotReadableException. Message: {}, StackTrace: {}", e.getMessage(), e.getStackTrace());
-
 
         return new ErrorResponse(e.getMessage(), "Validation error", HttpStatus.BAD_REQUEST.toString());
     }

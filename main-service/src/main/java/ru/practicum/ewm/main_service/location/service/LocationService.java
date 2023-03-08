@@ -1,11 +1,9 @@
-package ru.practicum.ewm.main_service.location;
+package ru.practicum.ewm.main_service.location.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.main_service.event_category.dto.CategoryDto;
-import ru.practicum.ewm.main_service.event_category.mapper.CategoryMapper;
-import ru.practicum.ewm.main_service.exception.model.NotFoundException;
 import ru.practicum.ewm.main_service.location.model.Location;
+import ru.practicum.ewm.main_service.location.repository.LocationRepository;
 
 import java.util.Optional;
 
@@ -22,8 +20,7 @@ public class LocationService {
     public Location save(Location location) {
         Optional<Location> existedLocation = locationRepository
                 .findByLatAndLon(location.getLat(), location.getLon());
-        if(existedLocation.isEmpty())
-        {
+        if (existedLocation.isEmpty()) {
             locationRepository.save(location);
         }
         return locationRepository.findByLatAndLon(location.getLat(), location.getLon()).orElse(null);

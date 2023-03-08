@@ -20,7 +20,7 @@ import ru.practicum.ewm.main_service.event_category.repository.CategoryRepositor
 import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 import ru.practicum.ewm.main_service.exception.model.ConflictException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
-import ru.practicum.ewm.main_service.location.LocationService;
+import ru.practicum.ewm.main_service.location.service.LocationService;
 import ru.practicum.ewm.main_service.location.model.Location;
 import ru.practicum.ewm.main_service.participate_request.model.ParticipationRequest;
 import ru.practicum.ewm.main_service.participate_request.repository.RequestRepository;

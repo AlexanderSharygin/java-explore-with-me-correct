@@ -1,4 +1,4 @@
-package ru.practicum.ewm.main_service.location;
+package ru.practicum.ewm.main_service.location.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,5 +13,4 @@ import java.util.Optional;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
     Optional<Location> findByLatAndLon(double lat, double lon);
-
 }
