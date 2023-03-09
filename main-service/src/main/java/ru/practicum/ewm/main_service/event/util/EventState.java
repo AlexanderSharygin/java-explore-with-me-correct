@@ -8,7 +8,7 @@ public enum EventState {
 
     private final String state;
 
-    private EventState(String state) {
+    EventState(String state) {
         this.state = state;
     }
 

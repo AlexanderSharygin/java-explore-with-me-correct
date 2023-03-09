@@ -22,7 +22,7 @@ public class EventPublicController {
 
     private final StatClient statClient;
 
-    private final String APP = "ewm-main";
+    private final String app = "ewm-main";
 
     @Autowired
     public EventPublicController(EventService eventService, StatClient statClient) {
@@ -33,7 +33,7 @@ public class EventPublicController {
     @GetMapping("/{id}")
     public EventFullDto getEvents(@PathVariable Long id,
                                   HttpServletRequest request) {
-        statClient.create(new HitDto(APP, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
+        statClient.create(new HitDto(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
 
         return eventService.getById(id);
     }
@@ -51,7 +51,7 @@ public class EventPublicController {
                                             @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                             @Positive @RequestParam(value = "size", defaultValue = "10") int size,
                                             HttpServletRequest request) {
-        statClient.create(new HitDto(APP, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
+        statClient.create(new HitDto(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
 
         return eventService.getAllShort(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }

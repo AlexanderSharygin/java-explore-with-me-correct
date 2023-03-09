@@ -2,14 +2,14 @@ package ru.practicum.ewm.main_service.participate_request.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.practicum.ewm.main_service.event.dto.EventRequestStatusUpdateRequest;
+import ru.practicum.ewm.main_service.event.dto.EventRequestStatusUpdateResult;
+import ru.practicum.ewm.main_service.event.dto.ParticipationRequestDto;
 import ru.practicum.ewm.main_service.event.model.Event;
 import ru.practicum.ewm.main_service.event.repository.EventRepository;
 import ru.practicum.ewm.main_service.exception.model.ConflictException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
-import ru.practicum.ewm.main_service.participate_request.dto.EventRequestStatusUpdateRequest;
-import ru.practicum.ewm.main_service.participate_request.dto.EventRequestStatusUpdateResult;
-import ru.practicum.ewm.main_service.participate_request.dto.ParticipationRequestDto;
-import ru.practicum.ewm.main_service.participate_request.dto.RequestMapper;
+import ru.practicum.ewm.main_service.participate_request.mapper.RequestMapper;
 import ru.practicum.ewm.main_service.participate_request.model.ParticipationRequest;
 import ru.practicum.ewm.main_service.participate_request.repository.RequestRepository;
 import ru.practicum.ewm.main_service.participate_request.util.RequestStatus;
@@ -48,7 +48,7 @@ public class ParticipateRequestService {
         List<ParticipationRequest> result = requestRepository.findByEvent(event);
 
         return result.stream()
-                .map(RequestMapper::FromRequestTpRequestDto)
+                .map(RequestMapper::fromRequestTpRequestDto)
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +72,7 @@ public class ParticipateRequestService {
         if (!event.isNeededModeration() || event.getParticipantLimit() == 0) {
             requests.forEach(req -> req.setStatus(RequestStatus.CONFIRMED));
             result.getConfirmedRequests().addAll(requests.stream()
-                    .map(RequestMapper::FromRequestTpRequestDto)
+                    .map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             requestRepository.saveAll(requests);
 
@@ -86,7 +86,7 @@ public class ParticipateRequestService {
                 request.getStatus().equals(RequestStatus.CONFIRMED)) {
             requests.forEach(req -> req.setStatus(RequestStatus.REJECTED));
             confirmed.addAll(requests.stream()
-                    .map(RequestMapper::FromRequestTpRequestDto)
+                    .map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             requestRepository.saveAll(requests);
             result.setConfirmedRequests(confirmed);
@@ -95,7 +95,7 @@ public class ParticipateRequestService {
                     .findAllByEventAndStatus(event, RequestStatus.PENDING);
             otherPendingRequests.forEach(req -> req.setStatus(RequestStatus.REJECTED));
             requestRepository.saveAll(otherPendingRequests);
-            rejected.addAll(otherPendingRequests.stream().map(RequestMapper::FromRequestTpRequestDto)
+            rejected.addAll(otherPendingRequests.stream().map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             result.setRejectedRequests(rejected);
             return result;
@@ -103,13 +103,13 @@ public class ParticipateRequestService {
 
         if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
             requests.forEach(req -> req.setStatus(RequestStatus.CONFIRMED));
-            confirmed.addAll(requests.stream().map(RequestMapper::FromRequestTpRequestDto)
+            confirmed.addAll(requests.stream().map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             requestRepository.saveAll(requests);
             result.setConfirmedRequests(confirmed);
         } else if (request.getStatus().equals(RequestStatus.REJECTED)) {
             requests.forEach(req -> req.setStatus(RequestStatus.REJECTED));
-            rejected.addAll(requests.stream().map(RequestMapper::FromRequestTpRequestDto)
+            rejected.addAll(requests.stream().map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             requestRepository.saveAll(requests);
             result.setRejectedRequests(rejected);
@@ -123,7 +123,7 @@ public class ParticipateRequestService {
         List<ParticipationRequest> result = requestRepository.findAllByRequester(user);
 
         return result.stream()
-                .map(RequestMapper::FromRequestTpRequestDto)
+                .map(RequestMapper::fromRequestTpRequestDto)
                 .collect(Collectors.toList());
     }
 
@@ -153,7 +153,7 @@ public class ParticipateRequestService {
         }
         ParticipationRequest result = requestRepository.save(request);
 
-        return RequestMapper.FromRequestTpRequestDto(result);
+        return RequestMapper.fromRequestTpRequestDto(result);
     }
 
     public ParticipationRequestDto cancelRequestByUser(Long userId, Long requestId) {
@@ -166,7 +166,7 @@ public class ParticipateRequestService {
         request.setStatus(RequestStatus.CANCELED);
         ParticipationRequest result = requestRepository.save(request);
 
-        return RequestMapper.FromRequestTpRequestDto(result);
+        return RequestMapper.fromRequestTpRequestDto(result);
     }
 
     private User getUserIfExist(long userId) {

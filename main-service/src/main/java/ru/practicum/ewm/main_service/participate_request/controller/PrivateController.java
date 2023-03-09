@@ -3,7 +3,7 @@ package ru.practicum.ewm.main_service.participate_request.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.main_service.participate_request.dto.ParticipationRequestDto;
+import ru.practicum.ewm.main_service.event.dto.ParticipationRequestDto;
 import ru.practicum.ewm.main_service.participate_request.service.ParticipateRequestService;
 
 import java.util.List;

@@ -9,7 +9,7 @@ public class SortFullDtoByViewsComparator implements Comparator<EventFullDto> {
 
     @Override
     public int compare(EventFullDto e1, EventFullDto e2) {
-        return (int) (e2.getViews() - e1.getViews());
+        return e2.getViews() - e1.getViews();
     }
 
     @Override

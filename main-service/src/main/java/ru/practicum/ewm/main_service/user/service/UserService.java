@@ -42,8 +42,8 @@ public class UserService {
     }
 
     public UserDto create(UserDto userDto) {
-        Optional<User> UserWithSameName = userRepository.findByName(userDto.getName());
-        if (UserWithSameName.isPresent()) {
+        Optional<User> userWithSameName = userRepository.findByName(userDto.getName());
+        if (userWithSameName.isPresent()) {
             throw new ConflictException("User with name " + userDto.getName() + " already exists in the DB");
         }
 

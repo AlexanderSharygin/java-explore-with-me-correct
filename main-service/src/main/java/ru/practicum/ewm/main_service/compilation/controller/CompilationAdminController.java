@@ -7,7 +7,6 @@ import ru.practicum.ewm.main_service.compilation.dto.CompilationDto;
 import ru.practicum.ewm.main_service.compilation.dto.CompilationRequest;
 import ru.practicum.ewm.main_service.compilation.service.CompilationService;
 
-
 import javax.validation.Valid;
 
 @RestController

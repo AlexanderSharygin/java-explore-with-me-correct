@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import ru.practicum.ewm.main_service.event.util.AdminEventAction;
 import ru.practicum.ewm.main_service.location.model.Location;
 
-
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;

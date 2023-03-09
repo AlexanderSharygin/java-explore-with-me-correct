@@ -5,14 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.main_service.event.dto.EventFullDto;
-import ru.practicum.ewm.main_service.event.dto.EventShortDto;
-import ru.practicum.ewm.main_service.event.dto.NewEventDto;
-import ru.practicum.ewm.main_service.event.dto.UpdateEventUserRequest;
+import ru.practicum.ewm.main_service.event.dto.*;
 import ru.practicum.ewm.main_service.event.service.EventService;
-import ru.practicum.ewm.main_service.participate_request.dto.EventRequestStatusUpdateRequest;
-import ru.practicum.ewm.main_service.participate_request.dto.EventRequestStatusUpdateResult;
-import ru.practicum.ewm.main_service.participate_request.dto.ParticipationRequestDto;
 import ru.practicum.ewm.main_service.participate_request.service.ParticipateRequestService;
 
 import javax.validation.Valid;

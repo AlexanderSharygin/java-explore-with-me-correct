@@ -1,6 +1,5 @@
 package ru.practicum.ewm.main_service.compilation.mapper;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.main_service.compilation.dto.CompilationDto;
 import ru.practicum.ewm.main_service.compilation.dto.CompilationRequest;

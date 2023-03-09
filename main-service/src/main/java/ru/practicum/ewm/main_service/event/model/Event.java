@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import ru.practicum.ewm.main_service.event_category.model.EventCategory;
 import ru.practicum.ewm.main_service.event.util.EventState;
+import ru.practicum.ewm.main_service.event_category.model.EventCategory;
 import ru.practicum.ewm.main_service.location.model.Location;
 import ru.practicum.ewm.main_service.user.model.User;
-
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

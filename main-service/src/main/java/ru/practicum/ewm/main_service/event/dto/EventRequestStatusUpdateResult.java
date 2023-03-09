@@ -1,4 +1,4 @@
-package ru.practicum.ewm.main_service.participate_request.dto;
+package ru.practicum.ewm.main_service.event.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

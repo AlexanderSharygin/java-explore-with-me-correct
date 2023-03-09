@@ -107,9 +107,8 @@ public class EventService {
         return getEventsShorts(events.stream().collect(Collectors.toList()));
     }
 
-    public List<EventFullDto> getAll
-            (List<Long> users, List<String> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime
-                    rangeEnd, Pageable pageable) {
+    public List<EventFullDto> getAll(List<Long> users, List<String> states, List<Long> categories,
+                                     LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable pageable) {
         List<EventState> eventStates = new ArrayList<>();
         if (states != null) {
             for (String state : states) {
