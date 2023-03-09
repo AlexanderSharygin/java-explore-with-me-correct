@@ -30,19 +30,13 @@ public class EventPublicController {
         this.statClient = statClient;
     }
 
-
     @GetMapping("/{id}")
     public EventFullDto getEvents(@PathVariable Long id,
                                   HttpServletRequest request) {
-
-        statClient.create(new HitDto(APP,
-                request.getRequestURI(),
-                request.getRemoteAddr(),
-                LocalDateTime.now()));
+        statClient.create(new HitDto(APP, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
 
         return eventService.getById(id);
     }
-
 
     @GetMapping
     public List<EventShortDto> getAllEvents(@RequestParam(value = "text", required = false) String text,
@@ -57,10 +51,8 @@ public class EventPublicController {
                                             @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                             @Positive @RequestParam(value = "size", defaultValue = "10") int size,
                                             HttpServletRequest request) {
-        statClient.create(new HitDto(APP,
-                request.getRequestURI(),
-                request.getRemoteAddr(),
-                LocalDateTime.now()));
+        statClient.create(new HitDto(APP, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
+
         return eventService.getAllShort(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
 }

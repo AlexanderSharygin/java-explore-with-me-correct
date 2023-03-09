@@ -176,8 +176,8 @@ public class CompilationService {
         Map<Long, Integer> viewsMap = getEventsViewsMap(new ArrayList<>(eventIds));
 
         return events.stream()
-                .map(event -> EventMapper.toEventShortDto(event,
-                        CategoryMapper.toCategoryDto(event.getCategory()),
+                .map(event -> EventMapper.fromEventToEventShortDto(event,
+                        CategoryMapper.toCategoryDtoFromCategory(event.getCategory()),
                         UserMapper.fromUserToUserShortDto(event.getOwner()),
                         confirmedRequestsCountForEvents.getOrDefault(event.getId(), 0L),
                         viewsMap.get(event.getId())))

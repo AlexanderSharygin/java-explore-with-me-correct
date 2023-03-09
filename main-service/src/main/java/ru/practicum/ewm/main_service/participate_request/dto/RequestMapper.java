@@ -1,23 +1,17 @@
 package ru.practicum.ewm.main_service.participate_request.dto;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.ewm.main_service.participate_request.model.ParticipationRequest;
 
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class RequestMapper {
 
-    public static ParticipationRequestDto toRequestDto(ParticipationRequest participationrequestd) {
-        if (participationrequestd == null) {
-            return null;
-        }
-
+    public static ParticipationRequestDto FromRequestTpRequestDto(ParticipationRequest participationrequest) {
         return new ParticipationRequestDto(
-                participationrequestd.getCreatedDateTime(),
-                participationrequestd.getEvent().getId(),
-                participationrequestd.getId(),
-                participationrequestd.getRequester().getId(),
-                participationrequestd.getStatus());
+                participationrequest.getCreatedDateTime(),
+                participationrequest.getEvent().getId(),
+                participationrequest.getId(),
+                participationrequest.getRequester().getId(),
+                participationrequest.getStatus());
     }
 }

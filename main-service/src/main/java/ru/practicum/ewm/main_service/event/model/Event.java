@@ -30,27 +30,21 @@ public class Event {
     private String annotation;
     @Size(min = 20, max = 7000)
     private String description;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private EventCategory category;
     private LocalDateTime createdDateTime;
     private LocalDateTime startDateTime;
-   
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private User owner;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
-    
     private boolean isPaid;
     private long participantLimit;
     private LocalDateTime publishedDateTime;
     private boolean isNeededModeration;
-
     @Enumerated(EnumType.STRING)
     private EventState state;
-   
 }

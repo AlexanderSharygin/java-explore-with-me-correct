@@ -1,6 +1,8 @@
 package ru.practicum.ewm.main_service.event.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.main_service.event.dto.EventFullDto;
@@ -22,7 +24,6 @@ public class EventAdminController {
         this.eventService = eventService;
     }
 
-
     //events
     @GetMapping
     public List<EventFullDto> getAll(@RequestParam(value = "users", required = false) List<Long> users,
@@ -34,13 +35,12 @@ public class EventAdminController {
                                      @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                      @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                      @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
-        return eventService.getAll(users, states, categories, rangeStart, rangeEnd, from, size);
+        Pageable pageable = PageRequest.of(from, size);
+        return eventService.getAll(users, states, categories, rangeStart, rangeEnd, pageable);
     }
 
-
     @PatchMapping("/{eventId}")
-    public EventFullDto publishEvent(@PathVariable Long eventId,
-                                     @RequestBody UpdateEventAdminRequest eventDto) {
+    public EventFullDto publishEvent(@PathVariable Long eventId, @RequestBody UpdateEventAdminRequest eventDto) {
         return eventService.updateByAdmin(eventId, eventDto);
     }
 

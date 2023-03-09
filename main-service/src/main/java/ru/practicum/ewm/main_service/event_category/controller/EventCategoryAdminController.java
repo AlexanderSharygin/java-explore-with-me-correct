@@ -3,7 +3,7 @@ package ru.practicum.ewm.main_service.event_category.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.ewm.main_service.event_category.dto.CategoryDto;
+import ru.practicum.ewm.main_service.event_category.dto.EventCategoryDto;
 import ru.practicum.ewm.main_service.event_category.service.EventCategoryService;
 
 import javax.validation.Valid;
@@ -19,16 +19,16 @@ public class EventCategoryAdminController {
     }
 
     @PatchMapping("/{catId}")
-    public CategoryDto update(@RequestBody @Valid CategoryDto categoryDto,
-                              @PathVariable Long catId) {
-        return categoryService.update(catId, categoryDto);
+    public EventCategoryDto update(@RequestBody @Valid EventCategoryDto eventCategoryDto,
+                                   @PathVariable Long catId) {
+        return categoryService.update(catId, eventCategoryDto);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto create(@RequestBody @Valid CategoryDto categoryDto) {
-        categoryDto.setId(-1L);
-        return categoryService.create(categoryDto);
+    public EventCategoryDto create(@RequestBody @Valid EventCategoryDto eventCategoryDto) {
+        eventCategoryDto.setId(-1L);
+        return categoryService.create(eventCategoryDto);
     }
 
     @DeleteMapping("/{catId}")

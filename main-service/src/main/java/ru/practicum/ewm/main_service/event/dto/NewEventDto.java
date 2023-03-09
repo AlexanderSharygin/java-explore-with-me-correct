@@ -17,23 +17,23 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class NewEventDto {
     @NotBlank
-    @Size(min = 20, max = 2000)
+    @Size(min = 20, max = 500)
     private String annotation;
     @NotNull
-    private long category; //required
+    private long category;
     @NotBlank
     @Size(min = 20, max = 7000)
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     @NotNull
-    private LocalDateTime eventDate; //required
+    private LocalDateTime eventDate;
     @NotNull
-    private Location location; //required
-    private Boolean paid; //default = false
+    private Location location;
+    private Boolean paid;
     @PositiveOrZero
-    private long participantLimit; //required, default = 0 (no limit)
-    private Boolean requestModeration; //required, default = true
+    private long participantLimit;
+    private Boolean requestModeration;
     @NotBlank
-    @Size(min = 3, max = 120)
-    private String title; //required min = 3, max =120
+    @Size(min = 1, max = 100)
+    private String title;
 }
