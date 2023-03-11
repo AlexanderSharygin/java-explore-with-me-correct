@@ -2,7 +2,6 @@ package ru.practicum.ewm.main_service.compilation.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.client.StatClient;
 import ru.practicum.ewm.main_service.compilation.dto.CompilationDto;
