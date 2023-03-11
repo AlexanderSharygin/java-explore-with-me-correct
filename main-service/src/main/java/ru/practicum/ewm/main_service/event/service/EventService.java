@@ -389,7 +389,7 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    private Map<Long, Long> getConfirmedRequestsCountForEvents(List<Event> events) {
+    public Map<Long, Long> getConfirmedRequestsCountForEvents(List<Event> events) {
         List<ParticipationRequest> requests = requestRepository.findAllByEventInAndStatus(new ArrayList<>(events),
                 RequestStatus.CONFIRMED);
         Set<Long> requestsIds = new HashSet<>();

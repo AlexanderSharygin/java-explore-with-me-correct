@@ -14,12 +14,10 @@ import ru.practicum.ewm.main_service.event.dto.EventShortDto;
 import ru.practicum.ewm.main_service.event.mapper.EventMapper;
 import ru.practicum.ewm.main_service.event.model.Event;
 import ru.practicum.ewm.main_service.event.repository.EventRepository;
+import ru.practicum.ewm.main_service.event.service.EventService;
 import ru.practicum.ewm.main_service.event_category.mapper.CategoryMapper;
 import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
-import ru.practicum.ewm.main_service.participate_request.model.ParticipationRequest;
-import ru.practicum.ewm.main_service.participate_request.repository.RequestRepository;
-import ru.practicum.ewm.main_service.participate_request.util.RequestStatus;
 import ru.practicum.ewm.main_service.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
@@ -32,16 +30,17 @@ public class CompilationService {
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
-    private final RequestRepository requestRepository;
+    private final EventService eventService;
+
     private final StatClient statClient;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public CompilationService(CompilationRepository compilationRepository, EventRepository eventRepository,
-                              RequestRepository requestRepository, StatClient statClient) {
+                              EventService eventService, StatClient statClient) {
         this.compilationRepository = compilationRepository;
         this.eventRepository = eventRepository;
-        this.requestRepository = requestRepository;
+        this.eventService = eventService;
         this.statClient = statClient;
     }
 
@@ -133,9 +132,6 @@ public class CompilationService {
         for (Long eventId : eventsIds) {
             uris.add("/events/" + eventId);
         }
-        ResponseEntity<Object> response = statClient.getStats("2000-01-01 00:00:00",
-                LocalDateTime.now().format(formatter),
-                uris, false);
         List<HashMap<Object, Object>> stats = (List<HashMap<Object, Object>>) statClient.getStats("2000-01-01 00:00:00",
                 LocalDateTime.now().format(formatter),
                 uris, false).getBody();
@@ -161,18 +157,8 @@ public class CompilationService {
         List<Long> eventIds = events.stream()
                 .map(Event::getId)
                 .collect(Collectors.toList());
-        List<ParticipationRequest> requests = requestRepository
-                .findAllByEventInAndStatus(new ArrayList<>(events),
-                        RequestStatus.CONFIRMED);
-        Set<Long> requestsIds = new HashSet<>();
-        for (var request : requests) {
-            requestsIds.add(request.getEvent().getId());
-        }
-        Map<Long, Long> confirmedRequestsCountForEvents = new HashMap<>();
-        for (var id : requestsIds) {
-            int count = (int) requests.stream().filter(k -> Objects.equals(k.getEvent().getId(), id)).count();
-            confirmedRequestsCountForEvents.put(id, (long) count);
-        }
+        Map<Long, Long> confirmedRequestsCountForEvents = eventService
+                .getConfirmedRequestsCountForEvents(new ArrayList<>(events));
         Map<Long, Integer> viewsMap = getEventsViewsMap(new ArrayList<>(eventIds));
 
         return events.stream()

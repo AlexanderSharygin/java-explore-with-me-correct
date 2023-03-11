@@ -16,12 +16,6 @@ spring:
     init:
       mode: always
 
-    #datasource:
-    # driverClassName: org.postgresql.Driver
-    #url: jdbc:postgresql://localhost:5432/ewm
-    #username: postgres
-    #password: admin
-
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
