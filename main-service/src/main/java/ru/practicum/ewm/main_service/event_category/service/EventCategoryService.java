@@ -69,7 +69,8 @@ public class EventCategoryService {
     }
 
     private EventCategory getCategoryIfExist(long catId) {
-        return categoryRepository.findById(catId)
+        return categoryRepository
+                .findById(catId)
                 .orElseThrow(() -> new NotFoundException("Category with id=" + catId + " not exists in the DB"));
     }
 }

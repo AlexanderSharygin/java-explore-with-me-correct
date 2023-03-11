@@ -158,7 +158,8 @@ public class ParticipateRequestService {
 
     public ParticipationRequestDto cancelRequestByUser(Long userId, Long requestId) {
         User user = getUserIfExist(userId);
-        ParticipationRequest request = requestRepository.findById(requestId)
+        ParticipationRequest request = requestRepository
+                .findById(requestId)
                 .orElseThrow(() -> new NotFoundException("Request with id=" + requestId + " not exists in the DB"));
         if (!Objects.equals(request.getRequester().getId(), user.getId())) {
             throw new ConflictException("User with id" + userId + " is not owner for request with id" + requestId);
@@ -170,12 +171,14 @@ public class ParticipateRequestService {
     }
 
     private User getUserIfExist(long userId) {
-        return userRepository.findById(userId)
+        return userRepository
+                .findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id" + userId + " not exists in the DB"));
     }
 
     private Event getEventIfExist(long eventId) {
-        return eventRepository.findById(eventId)
+        return eventRepository
+                .findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id" + eventId + " not exists in the DB."));
     }
 }

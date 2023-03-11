@@ -122,7 +122,8 @@ public class EventService {
             for (String state : states) {
                 if (!state.equals(EventState.PUBLISHED.toString()) && !state.equals(EventState.CANCELED.toString()) &&
                         !state.equals(EventState.PENDING.toString())) {
-                    throw new BadRequestException("Wrong status. Only PUBLISHED or PENDING or  CANCELED values could be used");
+                    throw new BadRequestException("Wrong status. Only PUBLISHED or PENDING or  CANCELED" +
+                            " values could be used");
                 }
             }
         }
@@ -151,7 +152,8 @@ public class EventService {
         }
         checkEventStartDate(eventDto.getEventDate());
         if (eventDto.getCategory() != null) {
-            EventCategory category = categoryRepository.findById(eventDto.getCategory())
+            EventCategory category = categoryRepository
+                    .findById(eventDto.getCategory())
                     .orElseThrow(() -> new NotFoundException(
                             "Category with id " + eventDto.getCategory() + "not exist in the DB"));
             event.setCategory(category);
@@ -187,13 +189,13 @@ public class EventService {
         if (!event.getState().equals(EventState.PENDING)) {
             throw new ConflictException("Only pending events can be published");
         }
-        if (event.getPublishedDateTime() != null &&
-                eventDto.getStateAction().equals(AdminEventAction.REJECT_EVENT)) {
+        if (event.getPublishedDateTime() != null && eventDto.getStateAction().equals(AdminEventAction.REJECT_EVENT)) {
             throw new ConflictException("Wrong status for the event. Only unpublished events can be rejected");
         }
         checkEventStartDate(eventDto.getEventDate());
         if (eventDto.getCategory() != null) {
-            EventCategory category = categoryRepository.findById(eventDto.getCategory())
+            EventCategory category = categoryRepository
+                    .findById(eventDto.getCategory())
                     .orElseThrow(() -> new NotFoundException(
                             "Category with id " + eventDto.getCategory() + "not exist in the DB"));
             event.setCategory(category);
@@ -236,7 +238,8 @@ public class EventService {
 
     public EventFullDto create(NewEventDto eventDto, Long userId) {
         User owner = getUserIfExist(userId);
-        EventCategory category = categoryRepository.findById(eventDto.getCategory())
+        EventCategory category = categoryRepository
+                .findById(eventDto.getCategory())
                 .orElseThrow(() -> new NotFoundException(
                         "Category with id " + eventDto.getCategory() + "not exist in the DB"));
         checkEventStartDate(eventDto.getEventDate());
@@ -324,8 +327,7 @@ public class EventService {
     }
 
     private EventFullDto getEventFullDto(Event event) {
-        Long confirmedRequests = (long) requestRepository
-                .findAllByEventAndStatus(event, RequestStatus.CONFIRMED).size();
+        long confirmedRequests = requestRepository.findAllByEventAndStatus(event, RequestStatus.CONFIRMED).size();
         Integer views = getEventsViews(event.getId());
 
         return EventMapper.fromEventToEventFullDto(event,
@@ -337,35 +339,32 @@ public class EventService {
 
     private void updateEvent(Event event, LocalDateTime eventDate, Location location, Boolean paid, Long
             participantLimit, Boolean requestModeration) {
-
         if (eventDate != null) {
             event.setStartDateTime(eventDate);
         }
-
         if (location != null) {
             event.setLocation(location);
         }
-
         if (paid != null) {
             event.setPaid(paid);
         }
-
         if (participantLimit != null) {
             event.setParticipantLimit(participantLimit);
         }
-
         if (requestModeration != null) {
             event.setNeededModeration(requestModeration);
         }
     }
 
     private User getUserIfExist(long userId) {
-        return userRepository.findById(userId)
+        return userRepository
+                .findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id" + userId + " not exists in the DB."));
     }
 
     private Event getEventIfExist(long eventId) {
-        return eventRepository.findById(eventId)
+        return eventRepository
+                .findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id" + eventId + " not exist in the DB"));
     }
 

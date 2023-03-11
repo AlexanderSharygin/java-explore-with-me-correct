@@ -26,11 +26,13 @@ public class UserService {
 
     public List<UserDto> getAll(List<Long> usersId, Pageable pageable) {
         if (usersId == null) {
-            return userRepository.findAll(pageable).stream()
+            return userRepository
+                    .findAll(pageable).stream()
                     .map(UserMapper::toUserDtoFromUser)
                     .collect(Collectors.toList());
         } else {
-            return userRepository.findAllByIdIn(usersId, pageable).stream()
+            return userRepository
+                    .findAllByIdIn(usersId, pageable).stream()
                     .map(UserMapper::toUserDtoFromUser)
                     .collect(Collectors.toList());
         }
@@ -56,7 +58,8 @@ public class UserService {
     }
 
     private User getUserIfExist(long userId) {
-        return userRepository.findById(userId)
+        return userRepository
+                .findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id" + userId + " not exists in the DB."));
     }
 }
