@@ -120,10 +120,10 @@ public class CompilationService {
         if (updateCompilationRequest.getPinned() != null) {
             existedCompilation.setPinned(updateCompilationRequest.getPinned());
         }
-        Set<EventShortDto> eventShortDtos = getEventsShorts(eventSet);
+        Set<EventShortDto> eventShortDto = getEventsShorts(eventSet);
         Compilation resultCompilation = compilationRepository.save(existedCompilation);
 
-        return CompilationMapper.toDtoFromCompilation(resultCompilation, eventShortDtos);
+        return CompilationMapper.toDtoFromCompilation(resultCompilation, eventShortDto);
     }
 
     public Map<Long, Integer> getEventsViewsMap(List<Long> eventsIds) {

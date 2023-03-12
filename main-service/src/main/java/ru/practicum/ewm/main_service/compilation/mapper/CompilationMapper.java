@@ -13,12 +13,10 @@ import java.util.Set;
 public class CompilationMapper {
 
     public static CompilationDto toDtoFromCompilation(Compilation compilation, Set<EventShortDto> eventShortDtoList) {
-
         return new CompilationDto(eventShortDtoList, compilation.getId(), compilation.isPinned(), compilation.getTitle());
     }
 
     public static Compilation toCompilationFromDto(CompilationRequest compilationDto, Set<Event> eventsList) {
-
         return new Compilation(null, eventsList, compilationDto.getPinned(), compilationDto.getTitle());
     }
 }
