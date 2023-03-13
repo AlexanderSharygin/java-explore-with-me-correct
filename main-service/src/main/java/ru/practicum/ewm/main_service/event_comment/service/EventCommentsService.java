@@ -17,7 +17,6 @@ import ru.practicum.ewm.main_service.event_comment.util.EventCommentAdminAction;
 import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 import ru.practicum.ewm.main_service.exception.model.ConflictException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
-import ru.practicum.ewm.main_service.location.model.Location;
 import ru.practicum.ewm.main_service.user.model.User;
 import ru.practicum.ewm.main_service.user.repository.UserRepository;
 
@@ -120,8 +119,7 @@ public class EventCommentsService {
                 comment.setPublishedDateTime(LocalDateTime.now());
                 comment.setIsPublished(true);
                 comment.setState(CommentState.APPROVED);
-            }
-            else if (commentDto.getAction().equals(EventCommentAdminAction.REJECT)) {
+            } else if (commentDto.getAction().equals(EventCommentAdminAction.REJECT)) {
                 comment.setPublishedDateTime(null);
                 comment.setIsPublished(false);
                 comment.setState(CommentState.REJECTED);

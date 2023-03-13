@@ -3,7 +3,6 @@ package ru.practicum.ewm.main_service.event_comment.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import ru.practicum.ewm.main_service.event_comment.util.CommentState;
 
