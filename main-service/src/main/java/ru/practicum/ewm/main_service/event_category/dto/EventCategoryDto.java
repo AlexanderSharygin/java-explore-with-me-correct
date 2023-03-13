@@ -14,5 +14,4 @@ public class EventCategoryDto {
     private long id;
     @NotBlank
     private String name;
-
 }

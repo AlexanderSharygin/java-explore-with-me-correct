@@ -10,7 +10,6 @@ import ru.practicum.ewm.main_service.compilation.service.CompilationService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/admin/compilations")
 public class CompilationAdminController {
     private final CompilationService compilationService;
 
@@ -19,19 +18,19 @@ public class CompilationAdminController {
         this.compilationService = compilationService;
     }
 
-    @PostMapping
+    @PostMapping("/admin/compilations")
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto create(@RequestBody @Valid CompilationRequest compilationDto) {
         return compilationService.create(compilationDto);
     }
 
-    @DeleteMapping("/{compId}")
+    @DeleteMapping("/admin/compilations/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long compId) {
         compilationService.delete(compId);
     }
 
-    @PatchMapping("/{compId}")
+    @PatchMapping("/admin/compilations/{compId}")
     public CompilationDto addEvent(@PathVariable long compId,
                                    @RequestBody @Valid CompilationRequest updateCompilationRequest) {
         return compilationService.updateCompilation(compId, updateCompilationRequest);

@@ -9,7 +9,6 @@ import ru.practicum.ewm.main_service.event_category.service.EventCategoryService
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/admin/categories")
 public class EventCategoryAdminController {
     private final EventCategoryService categoryService;
 
@@ -18,23 +17,21 @@ public class EventCategoryAdminController {
         this.categoryService = categoryService;
     }
 
-    @PatchMapping("/{catId}")
-    public EventCategoryDto update(@RequestBody @Valid EventCategoryDto eventCategoryDto,
-                                   @PathVariable Long catId) {
+    @PatchMapping("/admin/categories/{catId}")
+    public EventCategoryDto update(@RequestBody @Valid EventCategoryDto eventCategoryDto, @PathVariable Long catId) {
         return categoryService.update(catId, eventCategoryDto);
     }
 
-    @PostMapping
+    @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public EventCategoryDto create(@RequestBody @Valid EventCategoryDto eventCategoryDto) {
         eventCategoryDto.setId(-1L);
         return categoryService.create(eventCategoryDto);
     }
 
-    @DeleteMapping("/{catId}")
+    @DeleteMapping("/admin/categories/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long catId) {
         categoryService.delete(catId);
     }
 }
-

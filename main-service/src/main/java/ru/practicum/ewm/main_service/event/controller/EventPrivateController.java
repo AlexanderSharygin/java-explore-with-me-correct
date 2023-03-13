@@ -15,7 +15,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users")
 public class EventPrivateController {
 
     private final EventService eventService;
@@ -27,7 +26,7 @@ public class EventPrivateController {
         this.requestService = requestService;
     }
 
-    @GetMapping("/{userId}/events")
+    @GetMapping("/users/{userId}/events")
     public List<EventShortDto> getUserEvents(@PathVariable Long userId,
                                              @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                              @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -35,29 +34,29 @@ public class EventPrivateController {
         return eventService.getByUserId(userId, paging);
     }
 
-    @PostMapping("/{userId}/events")
+    @PostMapping("/users/{userId}/events")
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto createEvent(@RequestBody @Valid NewEventDto newEventDto, @PathVariable Long userId) {
         return eventService.create(newEventDto, userId);
     }
 
-    @GetMapping("/{userId}/events/{eventId}")
+    @GetMapping("/users/{userId}/events/{eventId}")
     public EventFullDto getUserEvents(@PathVariable Long userId, @PathVariable Long eventId) {
         return eventService.getEventByUserId(userId, eventId);
     }
 
-    @PatchMapping("/{userId}/events/{eventId}")
+    @PatchMapping("/users/{userId}/events/{eventId}")
     public EventFullDto updateEvent(@RequestBody UpdateEventUserRequest eventDto,
                                     @PathVariable Long userId, @PathVariable Long eventId) {
         return eventService.updateByUser(eventDto, userId, eventId);
     }
 
-    @GetMapping("/{userId}/events/{eventId}/requests")
+    @GetMapping("/users/{userId}/events/{eventId}/requests")
     public List<ParticipationRequestDto> getEventRequests(@PathVariable Long userId, @PathVariable Long eventId) {
         return requestService.getEventRequests(userId, eventId);
     }
 
-    @PatchMapping("/{userId}/events/{eventId}/requests")
+    @PatchMapping("/users/{userId}/events/{eventId}/requests")
     public EventRequestStatusUpdateResult updateRequest(@PathVariable Long userId, @PathVariable Long eventId,
                                                         @RequestBody EventRequestStatusUpdateRequest request) {
         return requestService.updateRequest(userId, eventId, request);

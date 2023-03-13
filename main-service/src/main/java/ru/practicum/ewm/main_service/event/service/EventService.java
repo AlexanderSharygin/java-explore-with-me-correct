@@ -180,8 +180,9 @@ public class EventService {
         if (eventDto.getTitle() != null && !eventDto.getTitle().isBlank()) {
             event.setTitle(eventDto.getTitle());
         }
+        Event updated = eventRepository.save(event);
 
-        return getEventFullDto(event);
+        return getEventFullDto(updated);
     }
 
     public EventFullDto updateByAdmin(Long eventId, UpdateEventAdminRequest eventDto) {

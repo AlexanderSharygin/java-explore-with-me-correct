@@ -31,8 +31,7 @@ public class ParticipateRequestService {
     private final EventRepository eventRepository;
 
     @Autowired
-    public ParticipateRequestService(RequestRepository requestRepository,
-                                     UserRepository userRepository,
+    public ParticipateRequestService(RequestRepository requestRepository, UserRepository userRepository,
                                      EventRepository eventRepository) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
@@ -95,9 +94,11 @@ public class ParticipateRequestService {
                     .findAllByEventAndStatus(event, RequestStatus.PENDING);
             otherPendingRequests.forEach(req -> req.setStatus(RequestStatus.REJECTED));
             requestRepository.saveAll(otherPendingRequests);
-            rejected.addAll(otherPendingRequests.stream().map(RequestMapper::fromRequestTpRequestDto)
+            rejected.addAll(otherPendingRequests.stream()
+                    .map(RequestMapper::fromRequestTpRequestDto)
                     .collect(Collectors.toList()));
             result.setRejectedRequests(rejected);
+
             return result;
         }
 
