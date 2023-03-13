@@ -17,6 +17,7 @@ import ru.practicum.ewm.main_service.event_comment.util.EventCommentAdminAction;
 import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 import ru.practicum.ewm.main_service.exception.model.ConflictException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
+import ru.practicum.ewm.main_service.location.model.Location;
 import ru.practicum.ewm.main_service.user.model.User;
 import ru.practicum.ewm.main_service.user.repository.UserRepository;
 
@@ -92,8 +93,9 @@ public class EventCommentsService {
         eventCommentDto.setCreatedOn(LocalDateTime.now());
         eventCommentDto.setIsPublished(false);
         checkIfEventPublished(event);
-        EventComment eventComment = commentRepository
-                .save(EventCommentMapper.toEventCommentFromShortDto(eventCommentDto, event, user));
+        EventComment comment = EventCommentMapper.toEventCommentFromShortDto(eventCommentDto, event, user);
+
+        EventComment eventComment = commentRepository.save(comment);
 
         return EventCommentMapper.toDtoFromEventComment(eventComment);
     }
@@ -119,7 +121,7 @@ public class EventCommentsService {
                 comment.setIsPublished(true);
                 comment.setState(CommentState.APPROVED);
             }
-            if (commentDto.getAction().equals(EventCommentAdminAction.REJECT)) {
+            else if (commentDto.getAction().equals(EventCommentAdminAction.REJECT)) {
                 comment.setPublishedDateTime(null);
                 comment.setIsPublished(false);
                 comment.setState(CommentState.REJECTED);
@@ -147,18 +149,18 @@ public class EventCommentsService {
     private User getUserIfExist(long userId) {
         return userRepository
                 .findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id" + userId + " not exists in the DB."));
+                .orElseThrow(() -> new NotFoundException("User with id " + userId + " not exists in the DB"));
     }
 
     private Event getEventIfExist(long eventId) {
         return eventRepository
                 .findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id" + eventId + " not exist in the DB"));
+                .orElseThrow(() -> new NotFoundException("Event with id " + eventId + " not exist in the DB"));
     }
 
     private EventComment getCommentIfExist(long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with id" + commentId + " not exist in the DB"));
+                .orElseThrow(() -> new NotFoundException("Comment with id " + commentId + " not exist in the DB"));
     }
 
     private void checkIfEventPublished(Event event) {

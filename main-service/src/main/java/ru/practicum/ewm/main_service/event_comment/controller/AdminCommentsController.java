@@ -19,6 +19,8 @@ public class AdminCommentsController {
         this.commentService = commentService;
     }
 
+
+
     @PatchMapping("/admin/comments/{commentId}")
     public EventCommentDto updateCommentByAdmin(@PathVariable long commentId,
                                                 @Valid @RequestBody EventCommentUpdateRequest commentDto) {

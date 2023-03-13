@@ -12,7 +12,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/events")
+@RequestMapping
 public class PublicCommentsController {
 
     private final EventCommentsService commentService;

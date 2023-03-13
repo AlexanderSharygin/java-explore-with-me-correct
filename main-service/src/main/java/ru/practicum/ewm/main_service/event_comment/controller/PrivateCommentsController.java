@@ -42,9 +42,9 @@ public class PrivateCommentsController {
         return commentService.getAllCommentsByUserId(userId, paging);
     }
 
-    @GetMapping("/users/{userId}/comments/{comId}")
-    public EventCommentDto getCommentByIdForUser(@PathVariable long userId, @PathVariable long comId) {
-        return commentService.getCommentByIdForAuthor(userId, comId);
+    @GetMapping("/users/{userId}/comments/{commentId}")
+    public EventCommentDto getCommentByIdForUser(@PathVariable long userId, @PathVariable long commentId) {
+        return commentService.getCommentByIdForAuthor(userId, commentId);
     }
 
     @PostMapping("/users/{userId}/comments")

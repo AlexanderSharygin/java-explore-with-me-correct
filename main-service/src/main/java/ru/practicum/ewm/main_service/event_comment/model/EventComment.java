@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Table(name = "event_comments")
 public class EventComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

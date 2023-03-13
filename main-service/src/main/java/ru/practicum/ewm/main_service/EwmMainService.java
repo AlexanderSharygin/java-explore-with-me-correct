@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "ru.practicum.ewm.main_service.exception",
         "ru.practicum.ewm.main_service.location",
         "ru.practicum.ewm.main_service.participate_request",
-        "ru.practicum.ewm.main_service.user"})
+        "ru.practicum.ewm.main_service.user", "ru.practicum.ewm.main_service.event_comment"})
 public class EwmMainService {
     public static void main(String[] args) {
         SpringApplication.run(EwmMainService.class, args);
