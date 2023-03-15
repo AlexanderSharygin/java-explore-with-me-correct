@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.main_service.event_comment.dto.EventCommentDto;
 import ru.practicum.ewm.main_service.event_comment.dto.EventCommentUpdateRequest;
 import ru.practicum.ewm.main_service.event_comment.service.EventCommentsService;
+import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 
 import javax.validation.Valid;
 
@@ -20,10 +21,12 @@ public class AdminCommentsController {
     }
 
 
-
     @PatchMapping("/admin/comments/{commentId}")
     public EventCommentDto updateCommentByAdmin(@PathVariable long commentId,
                                                 @Valid @RequestBody EventCommentUpdateRequest commentDto) {
+        if (commentDto.getAction() == null) {
+            throw new BadRequestException("Admin action could not be empty or null");
+        }
         return commentService.updateCommentByAdmin(commentId, commentDto);
     }
 

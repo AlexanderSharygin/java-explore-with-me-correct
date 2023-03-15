@@ -28,7 +28,8 @@ public class EventComment {
 
     @NotBlank
     @Size(min = 5, max = 1000)
-    private String text;
+    @Column (name = "comment_text")
+    private String commentText;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn (name = "event_id")

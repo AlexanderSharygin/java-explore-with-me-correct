@@ -12,8 +12,6 @@ import ru.practicum.ewm.main_service.event_comment.dto.EventCommentUpdateRequest
 import ru.practicum.ewm.main_service.event_comment.mapper.EventCommentMapper;
 import ru.practicum.ewm.main_service.event_comment.model.EventComment;
 import ru.practicum.ewm.main_service.event_comment.repository.EventCommentRepository;
-import ru.practicum.ewm.main_service.event_comment.util.CommentState;
-import ru.practicum.ewm.main_service.event_comment.util.EventCommentAdminAction;
 import ru.practicum.ewm.main_service.exception.model.BadRequestException;
 import ru.practicum.ewm.main_service.exception.model.ConflictException;
 import ru.practicum.ewm.main_service.exception.model.NotFoundException;
@@ -24,6 +22,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static ru.practicum.ewm.main_service.event_comment.util.CommentState.*;
+import static ru.practicum.ewm.main_service.event_comment.util.EventCommentAdminAction.ACCEPT;
+import static ru.practicum.ewm.main_service.event_comment.util.EventCommentAdminAction.REJECT;
 
 @Service
 public class EventCommentsService {
@@ -44,19 +46,17 @@ public class EventCommentsService {
 
     public List<EventCommentPublicInfo> getAllCommentsInfoForPublicEvent(long eventId, Pageable pageable) {
         Event event = getEventIfExist(eventId);
-        checkIfEventPublished(event);
-        List<EventComment> comments = commentRepository.findByEvent_IdAndState(eventId, CommentState.APPROVED, pageable);
+        throwIfEventNotPublished(event);
 
-        return comments.stream()
+        return commentRepository.findByEvent_IdAndState(eventId, APPROVED, pageable).stream()
                 .map(EventCommentMapper::toPublicInfoFromEventComment)
                 .collect(Collectors.toList());
     }
 
     public List<EventCommentDto> getAllCommentsByUserId(long userId, Pageable pageable) {
         getUserIfExist(userId);
-        List<EventComment> comments = commentRepository.findByUser_Id(userId, pageable);
 
-        return comments.stream()
+        return commentRepository.findByUser_Id(userId, pageable).stream()
                 .map(EventCommentMapper::toDtoFromEventComment)
                 .collect(Collectors.toList());
     }
@@ -67,9 +67,8 @@ public class EventCommentsService {
         if (!Objects.equals(event.getOwner().getId(), user.getId())) {
             throw new NotFoundException("User with id" + userId + " is not owner for event with id" + eventId);
         }
-        List<EventComment> comments = commentRepository.findByEvent_Id(eventId, pageable);
 
-        return comments.stream()
+        return commentRepository.findByEvent_Id(eventId, pageable).stream()
                 .map(EventCommentMapper::toDtoFromEventComment)
                 .collect(Collectors.toList());
     }
@@ -77,7 +76,7 @@ public class EventCommentsService {
     public EventCommentDto getCommentByIdForAuthor(long userId, long comId) {
         User user = getUserIfExist(userId);
         EventComment comment = getCommentIfExist(comId);
-        checkIfUserIsAuthor(comment, user);
+        throwIfUserNotAuthor(comment, user);
 
         return EventCommentMapper.toDtoFromEventComment(comment);
     }
@@ -88,12 +87,11 @@ public class EventCommentsService {
         eventCommentDto.setId(-1L);
         eventCommentDto.setUserId(userId);
         eventCommentDto.setEventId(eventId);
-        eventCommentDto.setState(CommentState.NEW);
+        eventCommentDto.setState(NEW);
         eventCommentDto.setCreatedOn(LocalDateTime.now());
         eventCommentDto.setIsPublished(false);
-        checkIfEventPublished(event);
+        throwIfEventNotPublished(event);
         EventComment comment = EventCommentMapper.toEventCommentFromShortDto(eventCommentDto, event, user);
-
         EventComment eventComment = commentRepository.save(comment);
 
         return EventCommentMapper.toDtoFromEventComment(eventComment);
@@ -102,9 +100,9 @@ public class EventCommentsService {
     public EventCommentDto updateCommentByAuthor(long userId, long commentId, EventCommentUpdateRequest commentDto) {
         User owner = getUserIfExist(userId);
         EventComment comment = getCommentIfExist(commentId);
-        checkIfUserIsAuthor(comment, owner);
-        comment.setText(commentDto.getText());
-        comment.setState(CommentState.NEW);
+        throwIfUserNotAuthor(comment, owner);
+        comment.setCommentText(commentDto.getText());
+        comment.setState(NEW);
         commentRepository.save(comment);
 
         return EventCommentMapper.toDtoFromEventComment(getCommentIfExist(commentId));
@@ -112,20 +110,16 @@ public class EventCommentsService {
 
     public EventCommentDto updateCommentByAdmin(long commentId, EventCommentUpdateRequest commentDto) {
         EventComment comment = getCommentIfExist(commentId);
-        if (commentDto.getAction() == null) {
-            throw new BadRequestException("Admin action could not be empty or null");
+        if (commentDto.getAction().equals(ACCEPT)) {
+            comment.setPublishedDateTime(LocalDateTime.now());
+            comment.setIsPublished(true);
+            comment.setState(APPROVED);
+        } else if (commentDto.getAction().equals(REJECT)) {
+            comment.setPublishedDateTime(null);
+            comment.setIsPublished(false);
+            comment.setState(REJECTED);
         } else {
-            if (commentDto.getAction().equals(EventCommentAdminAction.ACCEPT)) {
-                comment.setPublishedDateTime(LocalDateTime.now());
-                comment.setIsPublished(true);
-                comment.setState(CommentState.APPROVED);
-            } else if (commentDto.getAction().equals(EventCommentAdminAction.REJECT)) {
-                comment.setPublishedDateTime(null);
-                comment.setIsPublished(false);
-                comment.setState(CommentState.REJECTED);
-            } else {
-                throw new BadRequestException("Unknown state value. Action value could be ACCEPT or REJECT");
-            }
+            throw new BadRequestException("Unknown state value. Action value could be ACCEPT or REJECT");
         }
         commentRepository.save(comment);
 
@@ -135,7 +129,7 @@ public class EventCommentsService {
     public void deleteCommentByAuthor(long userId, long commentId) {
         User owner = getUserIfExist(userId);
         EventComment comment = getCommentIfExist(commentId);
-        checkIfUserIsAuthor(comment, owner);
+        throwIfUserNotAuthor(comment, owner);
         commentRepository.delete(comment);
     }
 
@@ -161,13 +155,13 @@ public class EventCommentsService {
                 .orElseThrow(() -> new NotFoundException("Comment with id " + commentId + " not exist in the DB"));
     }
 
-    private void checkIfEventPublished(Event event) {
+    private void throwIfEventNotPublished(Event event) {
         if (event.getState() != EventState.PUBLISHED) {
             throw new ConflictException("Event is not published yet");
         }
     }
 
-    private void checkIfUserIsAuthor(EventComment comment, User user) {
+    private void throwIfUserNotAuthor(EventComment comment, User user) {
         if (!Objects.equals(user.getId(), comment.getUser().getId())) {
             throw new ConflictException(
                     "User with id" + user.getId() + " is not author for comment with id " + comment.getId());

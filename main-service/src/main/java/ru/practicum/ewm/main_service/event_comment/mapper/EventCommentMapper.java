@@ -16,12 +16,12 @@ public class EventCommentMapper {
     }
 
     public static EventCommentDto toDtoFromEventComment(EventComment comment) {
-        return new EventCommentDto(comment.getId(), comment.getText(), comment.getEvent().getId(),
+        return new EventCommentDto(comment.getId(), comment.getCommentText(), comment.getEvent().getId(),
                 comment.getUser().getId(), comment.getUser().getName(), comment.getState(), comment.getCreatedDateTime(),
                 comment.getPublishedDateTime(), comment.getIsPublished());
     }
 
     public static EventCommentPublicInfo toPublicInfoFromEventComment(EventComment comment) {
-        return new EventCommentPublicInfo(comment.getId(), comment.getText(), comment.getUser().getName(), comment.getPublishedDateTime());
+        return new EventCommentPublicInfo(comment.getId(), comment.getCommentText(), comment.getUser().getName(), comment.getPublishedDateTime());
     }
 }
