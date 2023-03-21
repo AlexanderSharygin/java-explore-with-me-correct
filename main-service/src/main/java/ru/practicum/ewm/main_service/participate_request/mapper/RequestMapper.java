@@ -8,11 +8,8 @@ import ru.practicum.ewm.main_service.participate_request.model.ParticipationRequ
 public class RequestMapper {
 
     public static ParticipationRequestDto fromRequestTpRequestDto(ParticipationRequest participationrequest) {
-        return new ParticipationRequestDto(
-                participationrequest.getCreatedDateTime(),
-                participationrequest.getEvent().getId(),
-                participationrequest.getId(),
-                participationrequest.getRequester().getId(),
-                participationrequest.getStatus());
+        return new ParticipationRequestDto(participationrequest.getCreatedDateTime(),
+                participationrequest.getEvent().getId(), participationrequest.getId(),
+                participationrequest.getRequester().getId(), participationrequest.getStatus());
     }
 }

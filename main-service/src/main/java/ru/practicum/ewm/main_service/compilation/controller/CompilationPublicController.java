@@ -12,7 +12,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/compilations")
 public class CompilationPublicController {
 
     private final CompilationService compilationService;
@@ -22,7 +21,7 @@ public class CompilationPublicController {
         this.compilationService = compilationService;
     }
 
-    @GetMapping
+    @GetMapping("/compilations")
     public List<CompilationDto> getAllCompilations(@RequestParam(value = "pinned", defaultValue = "false") boolean pinned,
                                                    @PositiveOrZero @RequestParam(value = "from", defaultValue = "0") int from,
                                                    @Positive @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -30,9 +29,8 @@ public class CompilationPublicController {
         return compilationService.getAll(pinned, paging);
     }
 
-    @GetMapping("/{compId}")
+    @GetMapping("/compilations/{compId}")
     public CompilationDto getCompilation(@PathVariable long compId) {
         return compilationService.getById(compId);
     }
-
 }

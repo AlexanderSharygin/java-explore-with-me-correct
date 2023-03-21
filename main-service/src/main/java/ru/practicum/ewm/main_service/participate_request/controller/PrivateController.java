@@ -9,7 +9,6 @@ import ru.practicum.ewm.main_service.participate_request.service.ParticipateRequ
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/users")
 public class PrivateController {
 
     private final ParticipateRequestService requestService;
@@ -20,19 +19,18 @@ public class PrivateController {
     }
 
     //requests
-    @GetMapping("/{userId}/requests")
+    @GetMapping("/users/{userId}/requests")
     public List<ParticipationRequestDto> getUserEvents(@PathVariable Long userId) {
-
         return requestService.getByUserId(userId);
     }
 
-    @PostMapping("/{userId}/requests")
+    @PostMapping("/users/{userId}/requests")
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto createRequest(@PathVariable Long userId, @RequestParam long eventId) {
         return requestService.create(userId, eventId);
     }
 
-    @PatchMapping("/{userId}/requests/{requestId}/cancel")
+    @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
     public ParticipationRequestDto cancelByUser(@PathVariable Long userId, @PathVariable Long requestId) {
         return requestService.cancelRequestByUser(userId, requestId);
     }

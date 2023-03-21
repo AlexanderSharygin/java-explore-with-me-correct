@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/admin/events")
 public class EventAdminController {
     private final EventService eventService;
 
@@ -24,8 +23,7 @@ public class EventAdminController {
         this.eventService = eventService;
     }
 
-    //events
-    @GetMapping
+    @GetMapping("/admin/events")
     public List<EventFullDto> getAll(@RequestParam(value = "users", required = false) List<Long> users,
                                      @RequestParam(value = "states", required = false) List<String> states,
                                      @RequestParam(value = "categories", required = false) List<Long> categories,
@@ -39,7 +37,7 @@ public class EventAdminController {
         return eventService.getAll(users, states, categories, rangeStart, rangeEnd, pageable);
     }
 
-    @PatchMapping("/{eventId}")
+    @PatchMapping("/admin/events/{eventId}")
     public EventFullDto publishEvent(@PathVariable Long eventId, @RequestBody UpdateEventAdminRequest eventDto) {
         return eventService.updateByAdmin(eventId, eventDto);
     }

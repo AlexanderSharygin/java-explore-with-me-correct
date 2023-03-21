@@ -56,6 +56,7 @@ public class EventCategoryService {
         }
 
         EventCategory category = categoryRepository.save(CategoryMapper.toCategoryFromCategoryDto(eventCategoryDto));
+
         return CategoryMapper.toCategoryDtoFromCategory(category);
     }
 

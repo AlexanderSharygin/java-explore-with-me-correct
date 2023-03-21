@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/events")
 public class EventPublicController {
     private final EventService eventService;
 
@@ -30,7 +29,7 @@ public class EventPublicController {
         this.statClient = statClient;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/events/{id}")
     public EventFullDto getEvents(@PathVariable Long id,
                                   HttpServletRequest request) {
         statClient.create(new HitDto(app, request.getRequestURI(), request.getRemoteAddr(), LocalDateTime.now()));
@@ -38,7 +37,7 @@ public class EventPublicController {
         return eventService.getById(id);
     }
 
-    @GetMapping
+    @GetMapping("/events")
     public List<EventShortDto> getAllEvents(@RequestParam(value = "text", required = false) String text,
                                             @RequestParam(value = "categories", required = false) List<Long> categories,
                                             @RequestParam(value = "paid", defaultValue = "false") boolean paid,

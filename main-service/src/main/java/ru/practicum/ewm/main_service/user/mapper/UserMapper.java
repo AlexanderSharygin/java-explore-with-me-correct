@@ -10,12 +10,7 @@ import ru.practicum.ewm.main_service.user.model.User;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserMapper {
     public static UserDto toUserDtoFromUser(User user) {
-        UserDto userDto = new UserDto(user.getEmail(), -1, user.getName());
-        if (user.getId() != null) {
-            userDto.setId(user.getId());
-        }
-
-        return userDto;
+        return new UserDto(user.getEmail(), user.getId(), user.getName());
     }
 
     public static User toUserFromUserDto(UserDto userDto) {
@@ -23,11 +18,6 @@ public class UserMapper {
     }
 
     public static UserShortDto fromUserToUserShortDto(User user) {
-        UserShortDto userShortDto = new UserShortDto(-1, user.getName());
-        if (user.getId() != null) {
-            userShortDto.setId(user.getId());
-        }
-
-        return userShortDto;
+        return new UserShortDto(user.getId(), user.getName());
     }
 }
